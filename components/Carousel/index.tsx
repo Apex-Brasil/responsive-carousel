@@ -105,7 +105,7 @@ const Carousel = () => {
 
   return (
     <>
-    <Counter/>
+    {/* <Counter/> */}
     <div className="mt-10 text-center min-h-screen min-w-fit max-w-screen-2xl gap-8 bg-white flex justify-center items-center mx-auto">
       {isChosen !== 0 && <AiFillCaretLeft onClick={() => handlePrev()} className='relative text-black h-8 w-8 hover:opacity-80 cursor-pointer'/>}
       {completeMap}
