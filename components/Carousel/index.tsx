@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence, useMotionValue } from "framer-motion"
 
 import Image from "next/image"
 
@@ -10,7 +10,27 @@ const carouselVariants = {
   notSelected: { scale: 1 }
 }
 
+const imagesVariants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? 10000 : -10000,
+      opacity: 0
+    };
+  },
+  center: {
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction: number) => {
+    return {
+      x: direction < 0 ? 10000 : -10000,
+      opacity: 0
+    };
+  }
+};
+
 import { useRef } from 'react';
+
 const Counter = props => {
   const renderCounter  = useRef(0);
   renderCounter.current = renderCounter.current + 1;
@@ -31,12 +51,15 @@ const useWidth = () => {
 
 const Carousel = () => {
   const [isChosen, setIsChosen] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(0)
+  const [[page, direction], setPage] = useState([0, 0]);
 
   const exampleMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  const x = useMotionValue(0)
   
   const [bounds, setBounds] = useState({
     'upper': 0,
-    'lower': 0,
     'limit': 0
   })
 
@@ -51,22 +74,24 @@ const Carousel = () => {
     widthSize < 650 ? calculatedValue = 1 : calculatedValue
 
     setBounds({
-      'upper': calculatedValue + bounds.limit,
-      'lower': bounds.lower + bounds.limit,
-      'limit': bounds.limit
+      'upper': calculatedValue,
+      'limit': calculatedValue
     })
+
+    setLimit(+(exampleMap.length / calculatedValue).toFixed(0) < +(exampleMap.length / calculatedValue) ? +(exampleMap.length / calculatedValue).toFixed(0) + 1 : +(exampleMap.length / calculatedValue).toFixed(0))
     
   }, [widthSize])
   
   const completeMap = useMemo(
-    () => exampleMap.map(i => (i < bounds.upper && i >= bounds.lower) && (
+    () => exampleMap.map(i => (i < bounds.upper + bounds.limit*page && i >= 0 + bounds.limit*page) && (
       <motion.div 
-        className=' h-fit bg-transparent cursor-pointer'
+        className='h-fit bg-transparent cursor-pointer'
         key={i}
 
         onClick={() => {
           setIsChosen(i)
           console.log(i)
+          console.log(`the limit of pages is ${limit}`)
         }}
 
         animate={isChosen === i ? 'selected' : 'notSelected'}
@@ -80,36 +105,54 @@ const Carousel = () => {
           alt={'a Royal Baron card'}
         />
       </motion.div>
-    )), [exampleMap]
+    )), [exampleMap, page]
   );
 
-  const handlePrev = () => {
-    isChosen === bounds.lower ? 
-      setBounds({
-        'upper': bounds.upper - 5,
-        'lower': bounds.lower - 5,
-        'limit': 5
-      })
-      : setIsChosen(isChosen - 1)
-  }
+  const validLeft = useMemo(
+    () => page !== 0 ? (
+      <AiFillCaretLeft onClick={() => paginate(-1)} className='relative text-black h-8 w-8 hover:opacity-80 cursor-pointer'/>
+    ) : (
+      <AiFillCaretLeft className='relative text-black h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
+    ), [page]
+  )
 
-  const handleNext = () => {
-    isChosen === bounds.upper ? 
-      setBounds({
-        'upper': bounds.upper + 5,
-        'lower': bounds.lower + 5,
-        'limit': 5
-      })
-      : setIsChosen(isChosen + 1)
-  }
+  const validRight = useMemo(
+    () => page !== limit - 1 ? (
+      <AiFillCaretRight onClick={() => paginate(1)} className='relative text-black h-8 w-8 hover:opacity-80 cursor-pointer'/>
+    ) : (
+      <AiFillCaretRight className='relative text-black h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
+    ), [page]
+  )
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
 
   return (
     <>
     {/* <Counter/> */}
-    <div className="mt-10 text-center min-h-screen min-w-fit max-w-screen-2xl gap-8 bg-white flex justify-center items-center mx-auto">
-      {isChosen !== 0 && <AiFillCaretLeft onClick={() => handlePrev()} className='relative text-black h-8 w-8 hover:opacity-80 cursor-pointer'/>}
-      {completeMap}
-      {isChosen !== exampleMap.length - 1 && <AiFillCaretRight onClick={() => handleNext()} className='relative text-black h-8 w-8 hover:opacity-80 cursor-pointer'/>}
+    <div className="mt-10 text-center min-h-screen min-w-fit gap-4 bg-white flex justify-center items-center mx-auto">
+      {validLeft}
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.div
+          key={page}
+          variants={imagesVariants}
+          custom={direction}
+          initial="enter"
+          animate="center"
+          exit="exit"
+
+          transition={{
+            x: { type: 'spring', bounce: 0, velocity: 2},
+            opacity: { duration: 0.1   }
+          }}
+
+          className='flex gap-8 max-w-screen-2xl'
+        >
+          {completeMap}
+        </motion.div>
+      </AnimatePresence>
+      {validRight}
     </div>
     </>
   )
