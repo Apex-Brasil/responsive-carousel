@@ -119,7 +119,7 @@ const Carousel = () => {
   )
 
   const validRight = useMemo(
-    () => page < limit ? (
+    () => page !== limit - 1 ? (
       <AiFillCaretRight onClick={() => paginate(1)} className='relative dark:text-white h-8 w-8 hover:opacity-80 cursor-pointer'/>
     ) : (
       <AiFillCaretRight className='relative dark:text-white h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
