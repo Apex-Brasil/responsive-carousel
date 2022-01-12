@@ -118,17 +118,17 @@ const Carousel = () => {
 
   const validLeft = useMemo(
     () => page !== 0 ? (
-      <AiFillCaretLeft onClick={() => paginate(-1)} className='relative text-white h-8 w-8 hover:opacity-80 cursor-pointer'/>
+      <AiFillCaretLeft onClick={() => paginate(-1)} className='relative dark:text-white h-8 w-8 hover:opacity-80 cursor-pointer'/>
     ) : (
-      <AiFillCaretLeft className='relative text-white h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
+      <AiFillCaretLeft className='relative dark:text-white h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
     ), [page]
   )
 
   const validRight = useMemo(
     () => page !== limit - 1 ? (
-      <AiFillCaretRight onClick={() => paginate(1)} className='relative text-white h-8 w-8 hover:opacity-80 cursor-pointer'/>
+      <AiFillCaretRight onClick={() => paginate(1)} className='relative dark:text-white h-8 w-8 hover:opacity-80 cursor-pointer'/>
     ) : (
-      <AiFillCaretRight className='relative text-white h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
+      <AiFillCaretRight className='relative dark:text-white h-8 w-8 hover:opacity-80 cursor-not-allowed'/>
     ), [page]
   )
 
@@ -151,7 +151,7 @@ const Carousel = () => {
             exit="exit"
 
             transition={{
-              x: { type: 'spring', bounce: 0, velocity: 1},
+              x: { type: 'spring', bounce: 0, velocity: 0.8},
               opacity: { duration: 0.45 } 
             }}
 
