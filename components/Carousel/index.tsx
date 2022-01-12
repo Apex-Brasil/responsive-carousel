@@ -135,7 +135,7 @@ const Carousel = () => {
           alt={'a Royal Baron card'}
         />
       </motion.div>
-    )), [baronsMap, page, limit]
+    )), [baronsMap, page, limit, isChosen]
   );
 
   const validLeft = useMemo(
