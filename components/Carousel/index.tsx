@@ -64,7 +64,7 @@ const Carousel = () => {
     if (!widthSize) return
 
     let calculatedValue = 0;
-    widthSize > 1600 ? calculatedValue = 5 : calculatedValue = +(widthSize / 450).toFixed(0);  
+    widthSize > 1600 ? calculatedValue = 5 : calculatedValue = +(widthSize / 400).toFixed(0);  
 
     widthSize < 650 ? calculatedValue = 1 : calculatedValue
 
@@ -74,7 +74,7 @@ const Carousel = () => {
     })
 
     setLimit(+(exampleMap.length / calculatedValue).toFixed(0) < +(exampleMap.length / calculatedValue) ? +(exampleMap.length / calculatedValue).toFixed(0) + 1 : +(exampleMap.length / calculatedValue).toFixed(0))
-    
+     
   }, [widthSize])
 
   useEffect(() => {
