@@ -1,5 +1,5 @@
-import { memo, useCallback, useMemo, useState, useEffect } from "react"
-import { motion, AnimatePresence, useMotionValue } from "framer-motion"
+import { useMemo, useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 import Image from "next/image"
 
@@ -15,12 +15,14 @@ const imagesVariants = {
     return {
       x: direction > 0 ? 1000 : -1000,
       opacity: 0,
-      scale: 1
+      scale: 1,
+      display: 'none'
     };
   },
   center: {
     x: 0,
-    opacity: 1
+    opacity: 1,
+    display: 'flex'
   },
   exit: (direction: number) => {
     return {
@@ -30,14 +32,6 @@ const imagesVariants = {
       display: 'none'
     };
   }
-};
-
-import { useRef } from 'react';
-
-const Counter = props => {
-  const renderCounter  = useRef(0);
-  renderCounter.current = renderCounter.current + 1;
-  return <p>Renders: {renderCounter.current}</p>;
 };
 
 const useWidth = () => {
@@ -58,8 +52,6 @@ const Carousel = () => {
   const [[page, direction], setPage] = useState([0, 0]);
 
   let [baronsMap, setBaronsMap] = useState([])
-
-  let exampleMap = []
   
   const [bounds, setBounds] = useState({
     'upper': 0,
