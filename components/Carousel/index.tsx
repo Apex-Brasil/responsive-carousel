@@ -51,7 +51,7 @@ const Carousel = () => {
   const [limit, setLimit] = useState<number>(0)
   const [[page, direction], setPage] = useState([0, 0]);
 
-  let [baronsMap, setBaronsMap] = useState([])
+  const exampleMap = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
   
   const [bounds, setBounds] = useState({
     'upper': 0,
@@ -73,9 +73,9 @@ const Carousel = () => {
       'limit': calculatedValue
     })
 
-    setLimit(+(baronsMap.length / calculatedValue).toFixed(0) < +(baronsMap.length / calculatedValue) ? +(baronsMap.length / calculatedValue).toFixed(0) + 1 : +(baronsMap.length / calculatedValue).toFixed(0))
+    setLimit(+(exampleMap.length / calculatedValue).toFixed(0) < +(exampleMap.length / calculatedValue) ? +(exampleMap.length / calculatedValue).toFixed(0) + 1 : +(exampleMap.length / calculatedValue).toFixed(0))
     
-  }, [widthSize, baronsMap])
+  }, [widthSize])
 
   useEffect(() => {
     // reset the carousel if the user changes device width
@@ -84,35 +84,15 @@ const Carousel = () => {
     setIsChosen(-1)
   }, [limit])
 
-  useEffect(() => {
-    getBarons()
-  }, [])
-
-  const castlesApi =
-  'https://wax.api.atomicassets.io/atomicassets/v1/assets?collection_name=castlesnftgo&'
-
-  const getBarons = () =>
-    fetch(
-      `${castlesApi}&limit=1000&schema_name=crafters`
-    )
-      .then((r) => r.json())
-      .then((r) => {
-        console.log('r - redeem', r.data)
-
-        setBaronsMap([...r.data])
-
-        return r
-      })
-  
   const completeMap = useMemo(
-    () => baronsMap.map((asset, i) => (i < bounds.upper + bounds.limit*page && i >= 0 + bounds.limit*page) && (
+    () => exampleMap.map((asset, i) => (i < bounds.upper + bounds.limit*page && i >= 0 + bounds.limit*page) && (
       <motion.div 
         className='h-fit bg-transparent cursor-pointer'
         key={i}
 
         onClick={() => {
           setIsChosen(i)
-          console.log(baronsMap[i])
+          console.log(i)
           // console.log(`the limit of pages is ${limit}`)
         }}
 
@@ -127,7 +107,7 @@ const Carousel = () => {
           alt={'a Royal Baron card'}
         />
       </motion.div>
-    )), [baronsMap, page, limit, isChosen]
+    )), [page, limit, isChosen]
   );
 
   const validLeft = useMemo(
