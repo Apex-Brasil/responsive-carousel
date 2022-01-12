@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes'
 import Head from 'next/head'
 
 const Home = () => {
-  const { resolvedTheme, setTheme } = useTheme()
+  // const { resolvedTheme, setTheme } = useTheme()
 
   return (
     <>
@@ -13,11 +13,11 @@ const Home = () => {
     </Head>
      
     <div>
-      <button
+      {/* <button
         onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       >
         click here to change the theme
-      </button>
+      </button> */}
 
       <Carousel/>
     </div>
