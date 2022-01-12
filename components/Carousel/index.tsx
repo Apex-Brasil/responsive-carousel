@@ -99,7 +99,7 @@ const Carousel = () => {
         onClick={() => {
           setIsChosen(i)
           console.log(i)
-          console.log(`the limit of pages is ${limit}`)
+          // console.log(`the limit of pages is ${limit}`)
         }}
 
         animate={isChosen === i ? 'selected' : 'notSelected'}
