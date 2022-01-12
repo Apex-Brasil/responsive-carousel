@@ -50,14 +50,12 @@ const useWidth = () => {
 };
 
 const Carousel = () => {
-  const [isChosen, setIsChosen] = useState<number>(0)
+  const [isChosen, setIsChosen] = useState<number>(-1)
   const [limit, setLimit] = useState<number>(0)
   const [[page, direction], setPage] = useState([0, 0]);
 
   const exampleMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-  const x = useMotionValue(0)
-  
   const [bounds, setBounds] = useState({
     'upper': 0,
     'limit': 0
